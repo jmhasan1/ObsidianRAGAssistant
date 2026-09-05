@@ -1,0 +1,8 @@
+streamlit==1.38.0
+sentence-transformers==3.0.1
+numpy
+python-frontmatter==1.1.0
+groq==0.11.0
+openai==1.51.0
+httpx<0.28
+python-dotenv==1.0.1

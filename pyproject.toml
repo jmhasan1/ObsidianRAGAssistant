@@ -1,0 +1,16 @@
+[project]
+name = "obsidian-rag-assistant"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "groq==0.11.0",
+    "httpx<0.28",
+    "numpy>=2.5.2",
+    "openai==1.51.0",
+    "python-dotenv==1.0.1",
+    "python-frontmatter==1.1.0",
+    "sentence-transformers==3.0.1",
+    "streamlit==1.38.0",
+]
