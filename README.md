@@ -96,7 +96,7 @@ saved index.
 
 1. Push this repo to GitHub.
 2. On [share.streamlit.io](https://share.streamlit.io), create a new app
-   pointing at `src/app.py`.
+   pointing at `app.py`.
 3. In the app's **Secrets**, add:
    ```toml
    GROQ_API_KEY = "your_key_here"
