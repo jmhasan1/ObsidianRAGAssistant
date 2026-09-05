@@ -46,13 +46,13 @@ def _call_groq(prompt: str) -> str:
     from groq import Groq
     client = Groq(api_key=os.environ["GROQ_API_KEY"])
     resp = client.chat.completions.create(
-        model="llama-3.1-8b-instant",
+        model="openai/gpt-oss-20b",
         messages=[
             {"role": "system", "content": SYSTEM_PROMPT},
             {"role": "user", "content": prompt},
         ],
         temperature=0.2,
-        max_tokens=600,
+        max_completion_tokens=600,
     )
     return resp.choices[0].message.content
 
@@ -67,7 +67,7 @@ def _call_openai(prompt: str) -> str:
             {"role": "user", "content": prompt},
         ],
         temperature=0.2,
-        max_tokens=600,
+        max_completion_tokens=600,
     )
     return resp.choices[0].message.content
 
@@ -79,8 +79,8 @@ def generate_answer(question: str, hits: list) -> dict:
     if os.environ.get("GROQ_API_KEY"):
         try:
             answer = _call_groq(prompt)
-            return {"answer": answer, "provider": "groq/llama-3.1-8b-instant"}
-        except Exception as e:
+            return {"answer": answer, "provider": "groq/openai/gpt-oss-20b"}
+        except Exception as e:  # noqa: BLE001
             last_err = e
     else:
         last_err = RuntimeError("GROQ_API_KEY not set")
@@ -89,7 +89,7 @@ def generate_answer(question: str, hits: list) -> dict:
         try:
             answer = _call_openai(prompt)
             return {"answer": answer, "provider": "openai/gpt-4o-mini"}
-        except Exception as e:
+        except Exception as e:  # noqa: BLE001
             last_err = e
 
     raise RuntimeError(f"No LLM provider succeeded. Last error: {last_err}")

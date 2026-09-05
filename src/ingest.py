@@ -10,9 +10,9 @@ Obsidian notes are already short and single-topic — see
 vault/General/Chunking-Strategies.md for the reasoning this mirrors.
 """
 
+import glob
 import os
 import re
-import glob
 from dataclasses import dataclass, field
 
 import frontmatter
