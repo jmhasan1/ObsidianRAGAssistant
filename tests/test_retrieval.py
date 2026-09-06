@@ -75,24 +75,52 @@ def test_relevance_gate_accepts_strong_dense_match():
 def test_relevance_gate_accepts_strong_lexical_match():
     results = [
         {
-            "dense_score": 0.42,
-            "bm25_score": 5.2,
+            "dense_score": 0.28,
+            "bm25_score": 6.5,
         }
     ]
 
     assert is_relevant(results)
 
+def test_relevance_gate_rejects_lexical_only_match():
+    results = [
+        {
+            "dense_score": 0.10,
+            "bm25_score": 6.5,
+        }
+    ]
+
+    assert not is_relevant(results)
 
 def test_relevance_gate_rejects_weak_evidence():
     results = [
         {
-            "dense_score": 0.38,
+            "dense_score": 0.20,
             "bm25_score": 0.7,
         }
     ]
 
     assert not is_relevant(results)
 
+def test_relevance_gate_accepts_semantic_match_above_threshold():
+    results = [
+        {
+            "dense_score": 0.35,
+            "bm25_score": 0.5,
+        }
+    ]
+
+    assert is_relevant(results)
+
+def test_relevance_gate_rejects_semantically_weak_result():
+    results = [
+        {
+            "dense_score": 0.34,
+            "bm25_score": 0.5,
+        }
+    ]
+
+    assert not is_relevant(results)
 
 def test_relevance_gate_rejects_empty_results():
     assert not is_relevant([])

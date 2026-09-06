@@ -143,14 +143,16 @@ def rank_fused_results(
 
     return results
 
-DEFAULT_DENSE_RELEVANCE_THRESHOLD = 0.55
-DEFAULT_BM25_RELEVANCE_THRESHOLD = 2.0
+DEFAULT_DENSE_RELEVANCE_THRESHOLD = 0.35
+DEFAULT_BM25_RELEVANCE_THRESHOLD = 6.0
+DEFAULT_MIN_DENSE_FOR_LEXICAL_MATCH = 0.25
 
 
 def is_relevant(
     results: list[dict],
     dense_threshold: float = DEFAULT_DENSE_RELEVANCE_THRESHOLD,
     bm25_threshold: float = DEFAULT_BM25_RELEVANCE_THRESHOLD,
+    min_dense_for_lexical_match: float = DEFAULT_MIN_DENSE_FOR_LEXICAL_MATCH,
 ) -> bool:
     """Return whether the top retrieved result contains sufficient evidence."""
     if not results:
@@ -161,7 +163,10 @@ def is_relevant(
     dense_score = float(top_result.get("dense_score", 0.0))
     bm25_score = float(top_result.get("bm25_score", 0.0))
 
-    return (
-        dense_score >= dense_threshold
-        or bm25_score >= bm25_threshold
+    strong_semantic_match = dense_score >= dense_threshold
+    strong_lexical_match = (
+        bm25_score >= bm25_threshold
+        and dense_score >= min_dense_for_lexical_match
     )
+
+    return strong_semantic_match or strong_lexical_match
