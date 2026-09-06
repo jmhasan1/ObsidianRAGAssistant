@@ -1,4 +1,4 @@
-from src.retrieval import BM25, rank_fused_results, tokenize
+from src.retrieval import BM25, is_relevant, rank_fused_results, tokenize
 
 
 def test_tokenize_normalizes_text():
@@ -46,7 +46,7 @@ def test_bm25_and_dense_rankings_can_be_fused():
     indexes = [index for index, _score in results]
 
     assert set(indexes) == {0, 1, 2}
-    
+
 def test_bm25_returns_scores_for_all_documents():
     documents = [
         "Hybrid search combines dense and lexical retrieval.",
@@ -60,3 +60,39 @@ def test_bm25_returns_scores_for_all_documents():
     assert len(scores) == len(documents)
     assert scores[2] > scores[0]
     assert scores[2] > scores[1]
+
+def test_relevance_gate_accepts_strong_dense_match():
+    results = [
+        {
+            "dense_score": 0.68,
+            "bm25_score": 0.4,
+        }
+    ]
+
+    assert is_relevant(results)
+
+
+def test_relevance_gate_accepts_strong_lexical_match():
+    results = [
+        {
+            "dense_score": 0.42,
+            "bm25_score": 5.2,
+        }
+    ]
+
+    assert is_relevant(results)
+
+
+def test_relevance_gate_rejects_weak_evidence():
+    results = [
+        {
+            "dense_score": 0.38,
+            "bm25_score": 0.7,
+        }
+    ]
+
+    assert not is_relevant(results)
+
+
+def test_relevance_gate_rejects_empty_results():
+    assert not is_relevant([])
