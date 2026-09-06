@@ -46,3 +46,17 @@ def test_bm25_and_dense_rankings_can_be_fused():
     indexes = [index for index, _score in results]
 
     assert set(indexes) == {0, 1, 2}
+    
+def test_bm25_returns_scores_for_all_documents():
+    documents = [
+        "Hybrid search combines dense and lexical retrieval.",
+        "Dense embeddings provide semantic similarity.",
+        "BM25 is a lexical retrieval method.",
+    ]
+
+    bm25 = BM25(documents)
+    scores = bm25.score("BM25 lexical retrieval")
+
+    assert len(scores) == len(documents)
+    assert scores[2] > scores[0]
+    assert scores[2] > scores[1]

@@ -157,7 +157,7 @@ class VaultIndex:
         return vectors / norms
 
     def query(self, question: str, top_k: int = 4):
-        """Retrieve relevant chunks using dense + BM25 hybrid search."""
+        """Retrieve top-k chunks using dense + BM25 hybrid search."""
         if self.embeddings is None or not self.documents:
             return []
 
@@ -174,7 +174,8 @@ class VaultIndex:
         dense_ranking = np.argsort(-dense_scores).tolist()
 
         # Lexical retrieval.
-        bm25_ranking = self.bm25.rank(question)
+        bm25_scores = self.bm25.score(question)
+        bm25_ranking = np.argsort(-np.asarray(bm25_scores)).tolist()
 
         # Reciprocal Rank Fusion.
         fused = rank_fused_results(
@@ -185,13 +186,33 @@ class VaultIndex:
             limit=top_k,
         )
 
+        # Convert rankings into 1-based rank lookups for diagnostics.
+        dense_ranks = {
+            document_index: rank + 1
+            for rank, document_index in enumerate(dense_ranking)
+        }
+        bm25_ranks = {
+            document_index: rank + 1
+            for rank, document_index in enumerate(bm25_ranking)
+        }
+
         results = []
 
         for document_index, fused_score in fused:
             result = dict(self.metadatas[document_index])
             result["text"] = self.documents[document_index]
             result["id"] = self.ids[document_index]
-            result["score"] = fused_score
+
+            # Retrieval diagnostics.
+            result["dense_score"] = float(dense_scores[document_index])
+            result["bm25_score"] = float(bm25_scores[document_index])
+            result["dense_rank"] = dense_ranks[document_index]
+            result["bm25_rank"] = bm25_ranks[document_index]
+            result["rrf_score"] = float(fused_score)
+
+            # Backward-compatible score field.
+            result["score"] = float(fused_score)
+
             results.append(result)
 
         return results
@@ -214,4 +235,10 @@ if __name__ == "__main__":
     ]:
         print(f"\nQuery: {q}")
         for h in idx.query(q, top_k=3):
-            print(f"  [{h['score']:.3f}] {h['note_title']} > {h['heading']}")
+            print(
+                f"  [{h['rrf_score']:.4f}] "
+                f"dense={h['dense_score']:.3f} "
+                f"bm25={h['bm25_score']:.3f} "
+                f"ranks=({h['dense_rank']},{h['bm25_rank']}) "
+                f"{h['note_title']} > {h['heading']}"
+            )
