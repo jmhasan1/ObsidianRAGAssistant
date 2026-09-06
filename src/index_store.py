@@ -18,6 +18,7 @@ import numpy as np
 from sentence_transformers import SentenceTransformer
 
 from .ingest import load_vault
+from .retrieval import BM25, rank_fused_results
 
 EMBED_MODEL_NAME = "all-MiniLM-L6-v2"
 INDEX_SCHEMA_VERSION = 2
@@ -33,6 +34,7 @@ class VaultIndex:
         self.documents: list[str] = []
         self.ids: list[str] = []
         self.index_metadata: dict = {}
+        self.bm25 = None
 
     @staticmethod
     def _vault_fingerprint(vault_dir: str) -> str:
@@ -79,9 +81,18 @@ class VaultIndex:
             "vault_fingerprint": self._vault_fingerprint(vault_dir),
             "chunk_count": len(chunks),
         }
-
+        self._build_bm25()
         self._save()
         return len(chunks)
+
+    def _build_bm25(self) -> None:
+        """Build the lexical index from the currently loaded documents."""
+        searchable_documents = [
+            f"{metadata['note_title']} {metadata['heading']} {document}"
+            for document, metadata in zip(self.documents, self.metadatas)
+        ]
+
+        self.bm25 = BM25(searchable_documents)
 
     def load_if_exists(self, vault_dir: str | None = None) -> bool:
         """Load a compatible index; rebuild is required when the vault changed."""
@@ -119,6 +130,7 @@ class VaultIndex:
             self.documents = documents
             self.metadatas = metadatas
             self.index_metadata = metadata
+            self._build_bm25()
             return True
         except (OSError, ValueError, KeyError, json.JSONDecodeError):
             return False
@@ -145,27 +157,44 @@ class VaultIndex:
         return vectors / norms
 
     def query(self, question: str, top_k: int = 4):
-        """Return top-k chunks ranked by cosine similarity."""
-        if self.embeddings is None or len(self.embeddings) == 0:
+        """Retrieve relevant chunks using dense + BM25 hybrid search."""
+        if self.embeddings is None or not self.documents:
             return []
 
-        query_vec = self.model.encode([question])
-        query_vec = self._normalize(query_vec)[0]
-        scores = self.embeddings @ query_vec
-        top_k = min(top_k, len(scores))
-        top_idx = np.argsort(-scores)[:top_k]
+        if self.bm25 is None:
+            self._build_bm25()
 
-        hits = []
-        for i in top_idx:
-            hits.append(
-                {
-                    "chunk_id": self.ids[i],
-                    "text": self.documents[i],
-                    "score": float(scores[i]),
-                    **self.metadatas[i],
-                }
-            )
-        return hits
+        # Dense retrieval.
+        query_vec = self.model.encode(
+            [question],
+            normalize_embeddings=True,
+        )[0]
+
+        dense_scores = self.embeddings @ query_vec
+        dense_ranking = np.argsort(-dense_scores).tolist()
+
+        # Lexical retrieval.
+        bm25_ranking = self.bm25.rank(question)
+
+        # Reciprocal Rank Fusion.
+        fused = rank_fused_results(
+            [
+                dense_ranking,
+                bm25_ranking,
+            ],
+            limit=top_k,
+        )
+
+        results = []
+
+        for document_index, fused_score in fused:
+            result = dict(self.metadatas[document_index])
+            result["text"] = self.documents[document_index]
+            result["id"] = self.ids[document_index]
+            result["score"] = fused_score
+            results.append(result)
+
+        return results
 
     def count(self):
         return 0 if self.embeddings is None else len(self.embeddings)
