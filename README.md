@@ -6,7 +6,7 @@ The system combines dense semantic retrieval with BM25 lexical retrieval, fuses 
 
 Built as the MVP submission for **The Skillians' Generative AI Developer Intern Build Sprint**.
 
-**Live Demo:** _Add deployed Streamlit URL after deployment_
+**Live Demo:** **Live Demo:** [Obsidian Vault RAG Assistant](https://obsidianragassistant.streamlit.app/)<br>
 **GitHub:** https://github.com/jmhasan1/obsidian-rag-assistant
 
 ---
