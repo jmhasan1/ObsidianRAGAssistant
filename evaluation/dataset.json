@@ -1,0 +1,74 @@
+[
+  {
+    "id": "q01",
+    "question": "What is hybrid search and why does it matter?",
+    "answerable": true,
+    "relevant_sources": ["Hybrid Search"]
+  },
+  {
+    "id": "q02",
+    "question": "How does Reciprocal Rank Fusion combine retrieval results?",
+    "answerable": true,
+    "relevant_sources": ["Hybrid Search"]
+  },
+  {
+    "id": "q03",
+    "question": "What embedding model is used for the local retrieval baseline?",
+    "answerable": true,
+    "relevant_sources": ["Sentence Embeddings"]
+  },
+  {
+    "id": "q04",
+    "question": "What hardware is used for local development?",
+    "answerable": true,
+    "relevant_sources": ["Hardware Constraints"]
+  },
+  {
+    "id": "q05",
+    "question": "Why is heading-based chunking a good fit for an Obsidian vault?",
+    "answerable": true,
+    "relevant_sources": ["Chunking Strategies"]
+  },
+  {
+    "id": "q06",
+    "question": "What are the core components of an agentic AI system?",
+    "answerable": true,
+    "relevant_sources": ["Agentic AI Concepts"]
+  },
+  {
+    "id": "q07",
+    "question": "What are the main stages of a RAG pipeline?",
+    "answerable": true,
+    "relevant_sources": ["Retrieval-Augmented Generation"]
+  },
+  {
+    "id": "q08",
+    "question": "Why can brute-force cosine similarity be sufficient for a small vault?",
+    "answerable": true,
+    "relevant_sources": ["Vector Databases"]
+  },
+  {
+    "id": "q09",
+    "question": "What is the capital of France?",
+    "answerable": false,
+    "relevant_sources": []
+  },
+  {
+    "id": "q10",
+    "question": "Who won the 2026 FIFA World Cup?",
+    "answerable": false,
+    "relevant_sources": []
+  },
+  {
+    "id": "q11",
+    "question": "What is the current stock price of NVIDIA?",
+    "answerable": false,
+    "relevant_sources": []
+  },
+  {
+    "id": "q12",
+    "question": "What is the weather forecast for Guwahati tomorrow?",
+    "answerable": false,
+    "relevant_sources": []
+  }
+]

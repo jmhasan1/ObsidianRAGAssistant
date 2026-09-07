@@ -1,0 +1,762 @@
+{
+  "config": {
+    "top_k": 4,
+    "embedding_model": "all-MiniLM-L6-v2",
+    "index_schema_version": 2
+  },
+  "metrics": {
+    "query_count": 12,
+    "answerable_queries": 8,
+    "unanswerable_queries": 4,
+    "retrieval": {
+      "hit_at_4": 0.875,
+      "mrr": 0.875
+    },
+    "relevance_gate": {
+      "accuracy": 1.0,
+      "answerable_recall": 1.0,
+      "unanswerable_rejection": 1.0
+    },
+    "generation": {
+      "attempted": 8,
+      "successful": 8,
+      "success_rate": 1.0,
+      "answers_with_citations": 8,
+      "citation_coverage": 1.0,
+      "answers_with_fully_valid_citations": 8,
+      "citation_validity": 1.0
+    }
+  },
+  "queries": [
+    {
+      "id": "q01",
+      "question": "What is hybrid search and why does it matter?",
+      "answerable": true,
+      "gate_prediction": true,
+      "gate_correct": true,
+      "hit_at_k": true,
+      "mrr": 1.0,
+      "retrieved_sources": [
+        "Hybrid Search",
+        "Hybrid Search",
+        "Retrieval-Augmented Generation (RAG)",
+        "Agentic AI Concepts"
+      ],
+      "generation": {
+        "attempted": true,
+        "success": true,
+        "provider": "groq/openai/gpt-oss-20b",
+        "answer": "Hybrid search is a retrieval strategy that **combines sparse keyword\u2011based methods (e.g., BM25) with dense embedding\u2011based similarity** so that a query can be matched both exactly on terms and semantically (Hybrid Search | Section: Hybrid Search).  \n\nIt matters because it **improves answer quality**:  \n* It disambiguates queries that contain specific keywords, acronyms, or names that pure embeddings might blur together (Hybrid Search | Section: When It Helps Most).  \n* In small corpora, dense retrieval can return near\u2011ties; the keyword overlap from sparse retrieval can resolve those ties (Hybrid Search | Section: When It Helps Most).  \n* In a Retrieval\u2011Augmented Generation pipeline, hybrid search helps ground responses in real source text, reducing hallucination and enabling the model to answer questions about private or recent data it was never trained on (Retrieval\u2011Augmented Generation | Section: Why RAG Matters).\n\nSources: (Note: Hybrid Search), (Note: Retrieval-Augmented Generation (RAG)), (Note: Agentic AI Concepts)",
+        "citation_count": 3,
+        "has_citation": true,
+        "valid_citation_count": 3,
+        "all_citations_valid": true,
+        "citations": [
+          "Hybrid Search",
+          "Retrieval-Augmented Generation (RAG)",
+          "Agentic AI Concepts"
+        ],
+        "citation_note_titles": [
+          "Hybrid Search",
+          "Retrieval-Augmented Generation (RAG)",
+          "Agentic AI Concepts"
+        ]
+      },
+      "scores": [
+        {
+          "note_title": "Hybrid Search",
+          "heading": "Hybrid Search",
+          "dense_score": 0.6681,
+          "bm25_score": 5.5319,
+          "rrf_score": 0.032
+        },
+        {
+          "note_title": "Hybrid Search",
+          "heading": "When It Helps Most",
+          "dense_score": 0.415,
+          "bm25_score": 6.1406,
+          "rrf_score": 0.0318
+        },
+        {
+          "note_title": "Retrieval-Augmented Generation (RAG)",
+          "heading": "Why RAG Matters",
+          "dense_score": 0.479,
+          "bm25_score": 4.6243,
+          "rrf_score": 0.0313
+        },
+        {
+          "note_title": "Agentic AI Concepts",
+          "heading": "Relevance to RAG",
+          "dense_score": 0.3288,
+          "bm25_score": 5.5906,
+          "rrf_score": 0.0304
+        }
+      ]
+    },
+    {
+      "id": "q02",
+      "question": "How does Reciprocal Rank Fusion combine retrieval results?",
+      "answerable": true,
+      "gate_prediction": true,
+      "gate_correct": true,
+      "hit_at_k": true,
+      "mrr": 1.0,
+      "retrieved_sources": [
+        "Hybrid Search",
+        "DocuMind Project",
+        "Hybrid Search",
+        "Hybrid Search"
+      ],
+      "generation": {
+        "attempted": true,
+        "success": true,
+        "provider": "groq/openai/gpt-oss-20b",
+        "answer": "Reciprocal Rank Fusion (RRF) merges two ranked lists by using each document\u2019s rank position rather than its raw score. For each document, RRF assigns a score that is the reciprocal of its rank (e.g., 1/(rank\u202f+\u202fk)), then sums these scores across the lists. The resulting ranking prioritizes documents that appear high in any list, avoiding the need to normalize incomparable similarity or BM25 scores (Hybrid Search; DocuMind Project).\n\nSources: (Note: Hybrid Search), (Note: DocuMind Project)",
+        "citation_count": 2,
+        "has_citation": true,
+        "valid_citation_count": 2,
+        "all_citations_valid": true,
+        "citations": [
+          "Hybrid Search",
+          "DocuMind Project"
+        ],
+        "citation_note_titles": [
+          "Hybrid Search",
+          "DocuMind Project"
+        ]
+      },
+      "scores": [
+        {
+          "note_title": "Hybrid Search",
+          "heading": "Combining Scores",
+          "dense_score": 0.5362,
+          "bm25_score": 11.2487,
+          "rrf_score": 0.0325
+        },
+        {
+          "note_title": "DocuMind Project",
+          "heading": "Current State (v0.3, drafted)",
+          "dense_score": 0.5297,
+          "bm25_score": 11.4694,
+          "rrf_score": 0.0325
+        },
+        {
+          "note_title": "Hybrid Search",
+          "heading": "Hybrid Search",
+          "dense_score": 0.4381,
+          "bm25_score": 2.2803,
+          "rrf_score": 0.0306
+        },
+        {
+          "note_title": "Hybrid Search",
+          "heading": "When It Helps Most",
+          "dense_score": 0.417,
+          "bm25_score": 1.724,
+          "rrf_score": 0.0294
+        }
+      ]
+    },
+    {
+      "id": "q03",
+      "question": "What embedding model is used for the local retrieval baseline?",
+      "answerable": true,
+      "gate_prediction": true,
+      "gate_correct": true,
+      "hit_at_k": true,
+      "mrr": 1.0,
+      "retrieved_sources": [
+        "Sentence Embeddings",
+        "Sentence Embeddings",
+        "Transformer Architecture",
+        "Retrieval-Augmented Generation (RAG)"
+      ],
+      "generation": {
+        "attempted": true,
+        "success": true,
+        "provider": "groq/openai/gpt-oss-20b",
+        "answer": "The excerpts do not specify which embedding model is used for the local retrieval baseline.\n\nSources: (Note: Sentence Embeddings), (Note: Transformer Architecture), (Note: Retrieval-Augmented Generation (RAG))",
+        "citation_count": 3,
+        "has_citation": true,
+        "valid_citation_count": 3,
+        "all_citations_valid": true,
+        "citations": [
+          "Sentence Embeddings",
+          "Transformer Architecture",
+          "Retrieval-Augmented Generation (RAG)"
+        ],
+        "citation_note_titles": [
+          "Sentence Embeddings",
+          "Transformer Architecture",
+          "Retrieval-Augmented Generation (RAG)"
+        ]
+      },
+      "scores": [
+        {
+          "note_title": "Sentence Embeddings",
+          "heading": "Practical Notes",
+          "dense_score": 0.5969,
+          "bm25_score": 8.8057,
+          "rrf_score": 0.0328
+        },
+        {
+          "note_title": "Sentence Embeddings",
+          "heading": "Common Models",
+          "dense_score": 0.509,
+          "bm25_score": 6.8297,
+          "rrf_score": 0.0315
+        },
+        {
+          "note_title": "Transformer Architecture",
+          "heading": "Why This Matters for LLMs and RAG",
+          "dense_score": 0.4636,
+          "bm25_score": 8.4781,
+          "rrf_score": 0.0311
+        },
+        {
+          "note_title": "Retrieval-Augmented Generation (RAG)",
+          "heading": "Retrieval-Augmented Generation (RAG)",
+          "dense_score": 0.4836,
+          "bm25_score": 4.966,
+          "rrf_score": 0.0299
+        }
+      ]
+    },
+    {
+      "id": "q04",
+      "question": "What hardware is used for local development?",
+      "answerable": true,
+      "gate_prediction": true,
+      "gate_correct": true,
+      "hit_at_k": true,
+      "mrr": 1.0,
+      "retrieved_sources": [
+        "Hardware Constraints",
+        "Hardware Constraints",
+        "DocuMind Project",
+        "Hardware Constraints"
+      ],
+      "generation": {
+        "attempted": true,
+        "success": true,
+        "provider": "groq/openai/gpt-oss-20b",
+        "answer": "Local development runs on a machine with an Intel\u202fi5\u202f10th\u2011Gen CPU, 16\u202fGB of RAM, and a GTX\u202f1650\u202fTi graphics card (4\u202fGB VRAM) .\n\nSources: (Note: Hardware Constraints), (Note: DocuMind Project)",
+        "citation_count": 2,
+        "has_citation": true,
+        "valid_citation_count": 2,
+        "all_citations_valid": true,
+        "citations": [
+          "Hardware Constraints",
+          "DocuMind Project"
+        ],
+        "citation_note_titles": [
+          "Hardware Constraints",
+          "DocuMind Project"
+        ]
+      },
+      "scores": [
+        {
+          "note_title": "Hardware Constraints",
+          "heading": "Hardware Constraints",
+          "dense_score": 0.4487,
+          "bm25_score": 7.3481,
+          "rrf_score": 0.032
+        },
+        {
+          "note_title": "Hardware Constraints",
+          "heading": "How It Shapes My Choices",
+          "dense_score": 0.3915,
+          "bm25_score": 8.7596,
+          "rrf_score": 0.032
+        },
+        {
+          "note_title": "DocuMind Project",
+          "heading": "Why \"Local-First\"",
+          "dense_score": 0.5298,
+          "bm25_score": 3.3352,
+          "rrf_score": 0.0313
+        },
+        {
+          "note_title": "Hardware Constraints",
+          "heading": "What This Rules Out",
+          "dense_score": 0.2508,
+          "bm25_score": 9.4612,
+          "rrf_score": 0.0303
+        }
+      ]
+    },
+    {
+      "id": "q05",
+      "question": "Why is heading-based chunking a good fit for an Obsidian vault?",
+      "answerable": true,
+      "gate_prediction": true,
+      "gate_correct": true,
+      "hit_at_k": true,
+      "mrr": 1.0,
+      "retrieved_sources": [
+        "Chunking Strategies",
+        "Chunking Strategies",
+        "Obsidian RAG Assistant Project",
+        "Obsidian RAG Assistant Project"
+      ],
+      "generation": {
+        "attempted": true,
+        "success": true,
+        "provider": "groq/openai/gpt-oss-20b",
+        "answer": "Heading\u2011based chunking works well for an Obsidian vault because:\n\n- Obsidian notes are written in Markdown, so headings (`#`, `##`, etc.) naturally delimit logical sections. Splitting at these boundaries keeps each chunk a coherent part of the note .  \n- Most Obsidian notes are short and single\u2011topic, so using a heading (or the whole note if it\u2019s short) as a chunk preserves the note\u2019s intent without fragmenting sentences or ideas .\n\nSources: (Note: Chunking Strategies), (Note: Obsidian RAG Assistant Project)",
+        "citation_count": 2,
+        "has_citation": true,
+        "valid_citation_count": 2,
+        "all_citations_valid": true,
+        "citations": [
+          "Chunking Strategies",
+          "Obsidian RAG Assistant Project"
+        ],
+        "citation_note_titles": [
+          "Chunking Strategies",
+          "Obsidian RAG Assistant Project"
+        ]
+      },
+      "scores": [
+        {
+          "note_title": "Chunking Strategies",
+          "heading": "Approaches",
+          "dense_score": 0.4702,
+          "bm25_score": 10.6447,
+          "rrf_score": 0.0325
+        },
+        {
+          "note_title": "Chunking Strategies",
+          "heading": "For Obsidian Vaults Specifically",
+          "dense_score": 0.4704,
+          "bm25_score": 6.9569,
+          "rrf_score": 0.0323
+        },
+        {
+          "note_title": "Obsidian RAG Assistant Project",
+          "heading": "Goal",
+          "dense_score": 0.259,
+          "bm25_score": 8.6709,
+          "rrf_score": 0.0302
+        },
+        {
+          "note_title": "Obsidian RAG Assistant Project",
+          "heading": "Relationship to DocuMind",
+          "dense_score": 0.2837,
+          "bm25_score": 5.7145,
+          "rrf_score": 0.0299
+        }
+      ]
+    },
+    {
+      "id": "q06",
+      "question": "What are the core components of an agentic AI system?",
+      "answerable": true,
+      "gate_prediction": true,
+      "gate_correct": true,
+      "hit_at_k": true,
+      "mrr": 1.0,
+      "retrieved_sources": [
+        "Agentic AI Concepts",
+        "Agentic AI Concepts",
+        "DocuMind Project",
+        "Agentic AI Concepts"
+      ],
+      "generation": {
+        "attempted": true,
+        "success": true,
+        "provider": "groq/openai/gpt-oss-20b",
+        "answer": "The core components of an agentic AI system are:\n\n- **Planner/Reasoner** \u2013 decides the next step to take.   \n- **Tools** \u2013 functions the agent can call (search, retrieval, code execution, API calls).   \n- **Memory** \u2013 short\u2011term (conversation) and long\u2011term (retrieved knowledge, vector stores).   \n- **Loop Control** \u2013 a stopping condition to prevent infinite looping.\n\nSources: (Note: Agentic AI Concepts), (Note: DocuMind Project)",
+        "citation_count": 2,
+        "has_citation": true,
+        "valid_citation_count": 2,
+        "all_citations_valid": true,
+        "citations": [
+          "Agentic AI Concepts",
+          "DocuMind Project"
+        ],
+        "citation_note_titles": [
+          "Agentic AI Concepts",
+          "DocuMind Project"
+        ]
+      },
+      "scores": [
+        {
+          "note_title": "Agentic AI Concepts",
+          "heading": "Core Components",
+          "dense_score": 0.6114,
+          "bm25_score": 11.6209,
+          "rrf_score": 0.0325
+        },
+        {
+          "note_title": "Agentic AI Concepts",
+          "heading": "Agentic AI Concepts",
+          "dense_score": 0.6474,
+          "bm25_score": 6.8507,
+          "rrf_score": 0.032
+        },
+        {
+          "note_title": "DocuMind Project",
+          "heading": "Roadmap",
+          "dense_score": 0.4128,
+          "bm25_score": 8.3098,
+          "rrf_score": 0.0306
+        },
+        {
+          "note_title": "Agentic AI Concepts",
+          "heading": "Multi-Agent Systems",
+          "dense_score": 0.52,
+          "bm25_score": 5.1758,
+          "rrf_score": 0.0306
+        }
+      ]
+    },
+    {
+      "id": "q07",
+      "question": "What are the main stages of a RAG pipeline?",
+      "answerable": true,
+      "gate_prediction": true,
+      "gate_correct": true,
+      "hit_at_k": false,
+      "mrr": 0.0,
+      "retrieved_sources": [
+        "Agentic AI Concepts",
+        "DocuMind Project",
+        "DocuMind Project",
+        "Transformer Architecture"
+      ],
+      "generation": {
+        "attempted": true,
+        "success": true,
+        "provider": "groq/openai/gpt-oss-20b",
+        "answer": "The core of a RAG pipeline consists of two main stages:\n\n1. **Retrieval** \u2013 the system fetches relevant documents or passages from a knowledge base.  \n2. **Generation** \u2013 a language model uses the retrieved context to produce the final answer.  \n\nIn an agentic RAG design, the model additionally decides whether to retrieve, what to search for, and whether the retrieved context is sufficient before generating a response (Note: Agentic AI Concepts).",
+        "citation_count": 1,
+        "has_citation": true,
+        "valid_citation_count": 1,
+        "all_citations_valid": true,
+        "citations": [
+          "Agentic AI Concepts"
+        ],
+        "citation_note_titles": [
+          "Agentic AI Concepts"
+        ]
+      },
+      "scores": [
+        {
+          "note_title": "Agentic AI Concepts",
+          "heading": "Relevance to RAG",
+          "dense_score": 0.6267,
+          "bm25_score": 6.7563,
+          "rrf_score": 0.0325
+        },
+        {
+          "note_title": "DocuMind Project",
+          "heading": "DocuMind Project",
+          "dense_score": 0.4407,
+          "bm25_score": 6.0268,
+          "rrf_score": 0.032
+        },
+        {
+          "note_title": "DocuMind Project",
+          "heading": "Roadmap",
+          "dense_score": 0.3465,
+          "bm25_score": 7.0472,
+          "rrf_score": 0.0313
+        },
+        {
+          "note_title": "Transformer Architecture",
+          "heading": "Why This Matters for LLMs and RAG",
+          "dense_score": 0.3555,
+          "bm25_score": 4.3473,
+          "rrf_score": 0.031
+        }
+      ]
+    },
+    {
+      "id": "q08",
+      "question": "Why can brute-force cosine similarity be sufficient for a small vault?",
+      "answerable": true,
+      "gate_prediction": true,
+      "gate_correct": true,
+      "hit_at_k": true,
+      "mrr": 1.0,
+      "retrieved_sources": [
+        "Vector Databases",
+        "Sentence Embeddings",
+        "Hybrid Search",
+        "Chunking Strategies"
+      ],
+      "generation": {
+        "attempted": true,
+        "success": true,
+        "provider": "groq/openai/gpt-oss-20b",
+        "answer": "Brute\u2011force cosine similarity can be sufficient for a small vault because the number of vectors is tiny\u2014only a few hundred to a few thousand notes\u2014so computing all pairwise similarities is fast enough that the extra overhead of building and maintaining an ANN index is unnecessary.\n\nSources: (Note: Vector Databases), (Note: Sentence Embeddings), (Note: Hybrid Search), (Note: Chunking Strategies)",
+        "citation_count": 4,
+        "has_citation": true,
+        "valid_citation_count": 4,
+        "all_citations_valid": true,
+        "citations": [
+          "Vector Databases",
+          "Sentence Embeddings",
+          "Hybrid Search",
+          "Chunking Strategies"
+        ],
+        "citation_note_titles": [
+          "Vector Databases",
+          "Sentence Embeddings",
+          "Hybrid Search",
+          "Chunking Strategies"
+        ]
+      },
+      "scores": [
+        {
+          "note_title": "Vector Databases",
+          "heading": "Indexing Strategies",
+          "dense_score": 0.5588,
+          "bm25_score": 14.1449,
+          "rrf_score": 0.0328
+        },
+        {
+          "note_title": "Sentence Embeddings",
+          "heading": "Practical Notes",
+          "dense_score": 0.3551,
+          "bm25_score": 5.8815,
+          "rrf_score": 0.0323
+        },
+        {
+          "note_title": "Hybrid Search",
+          "heading": "When It Helps Most",
+          "dense_score": 0.3008,
+          "bm25_score": 4.7123,
+          "rrf_score": 0.0315
+        },
+        {
+          "note_title": "Chunking Strategies",
+          "heading": "Approaches",
+          "dense_score": 0.2845,
+          "bm25_score": 5.2551,
+          "rrf_score": 0.0313
+        }
+      ]
+    },
+    {
+      "id": "q09",
+      "question": "What is the capital of France?",
+      "answerable": false,
+      "gate_prediction": false,
+      "gate_correct": true,
+      "hit_at_k": true,
+      "mrr": 0.0,
+      "retrieved_sources": [
+        "Transformer Architecture",
+        "Agentic AI Concepts",
+        "Vector Databases",
+        "Prompt Engineering Basics"
+      ],
+      "generation": {
+        "attempted": false,
+        "success": false,
+        "provider": null,
+        "answer": null,
+        "citation_count": 0,
+        "has_citation": false,
+        "valid_citation_count": 0,
+        "all_citations_valid": false
+      },
+      "scores": [
+        {
+          "note_title": "Transformer Architecture",
+          "heading": "Key Pieces",
+          "dense_score": 0.1017,
+          "bm25_score": 3.0926,
+          "rrf_score": 0.0315
+        },
+        {
+          "note_title": "Agentic AI Concepts",
+          "heading": "Core Components",
+          "dense_score": 0.0725,
+          "bm25_score": 2.7854,
+          "rrf_score": 0.0311
+        },
+        {
+          "note_title": "Vector Databases",
+          "heading": "Vector Databases",
+          "dense_score": 0.0245,
+          "bm25_score": 3.2726,
+          "rrf_score": 0.03
+        },
+        {
+          "note_title": "Prompt Engineering Basics",
+          "heading": "Prompt Engineering Basics",
+          "dense_score": 0.0164,
+          "bm25_score": 3.2726,
+          "rrf_score": 0.0291
+        }
+      ]
+    },
+    {
+      "id": "q10",
+      "question": "Who won the 2026 FIFA World Cup?",
+      "answerable": false,
+      "gate_prediction": false,
+      "gate_correct": true,
+      "hit_at_k": true,
+      "mrr": 0.0,
+      "retrieved_sources": [
+        "Obsidian RAG Assistant Project",
+        "Agentic AI Concepts",
+        "Prompt Engineering Basics",
+        "Learning Path"
+      ],
+      "generation": {
+        "attempted": false,
+        "success": false,
+        "provider": null,
+        "answer": null,
+        "citation_count": 0,
+        "has_citation": false,
+        "valid_citation_count": 0,
+        "all_citations_valid": false
+      },
+      "scores": [
+        {
+          "note_title": "Obsidian RAG Assistant Project",
+          "heading": "Obsidian RAG Assistant Project",
+          "dense_score": 0.0869,
+          "bm25_score": 4.6109,
+          "rrf_score": 0.032
+        },
+        {
+          "note_title": "Agentic AI Concepts",
+          "heading": "Core Components",
+          "dense_score": 0.0652,
+          "bm25_score": 0.4801,
+          "rrf_score": 0.0294
+        },
+        {
+          "note_title": "Prompt Engineering Basics",
+          "heading": "Prompt Engineering Basics",
+          "dense_score": 0.0608,
+          "bm25_score": 0.4361,
+          "rrf_score": 0.0283
+        },
+        {
+          "note_title": "Learning Path",
+          "heading": "Learning Path",
+          "dense_score": 0.0567,
+          "bm25_score": 0.4555,
+          "rrf_score": 0.0282
+        }
+      ]
+    },
+    {
+      "id": "q11",
+      "question": "What is the current stock price of NVIDIA?",
+      "answerable": false,
+      "gate_prediction": false,
+      "gate_correct": true,
+      "hit_at_k": true,
+      "mrr": 0.0,
+      "retrieved_sources": [
+        "Hardware Constraints",
+        "Obsidian RAG Assistant Project",
+        "Transformer Architecture",
+        "Vector Databases"
+      ],
+      "generation": {
+        "attempted": false,
+        "success": false,
+        "provider": null,
+        "answer": null,
+        "citation_count": 0,
+        "has_citation": false,
+        "valid_citation_count": 0,
+        "all_citations_valid": false
+      },
+      "scores": [
+        {
+          "note_title": "Hardware Constraints",
+          "heading": "What This Rules Out",
+          "dense_score": 0.1329,
+          "bm25_score": 3.8753,
+          "rrf_score": 0.0315
+        },
+        {
+          "note_title": "Obsidian RAG Assistant Project",
+          "heading": "v1 Scope",
+          "dense_score": 0.0951,
+          "bm25_score": 2.5289,
+          "rrf_score": 0.0292
+        },
+        {
+          "note_title": "Transformer Architecture",
+          "heading": "Key Pieces",
+          "dense_score": 0.0543,
+          "bm25_score": 3.0926,
+          "rrf_score": 0.029
+        },
+        {
+          "note_title": "Vector Databases",
+          "heading": "Vector Databases",
+          "dense_score": 0.0042,
+          "bm25_score": 3.2726,
+          "rrf_score": 0.0289
+        }
+      ]
+    },
+    {
+      "id": "q12",
+      "question": "What is the weather forecast for Guwahati tomorrow?",
+      "answerable": false,
+      "gate_prediction": false,
+      "gate_correct": true,
+      "hit_at_k": true,
+      "mrr": 0.0,
+      "retrieved_sources": [
+        "Hardware Constraints",
+        "Obsidian RAG Assistant Project",
+        "Obsidian RAG Assistant Project",
+        "Agentic AI Concepts"
+      ],
+      "generation": {
+        "attempted": false,
+        "success": false,
+        "provider": null,
+        "answer": null,
+        "citation_count": 0,
+        "has_citation": false,
+        "valid_citation_count": 0,
+        "all_citations_valid": false
+      },
+      "scores": [
+        {
+          "note_title": "Hardware Constraints",
+          "heading": "What This Rules Out",
+          "dense_score": 0.0829,
+          "bm25_score": 4.9791,
+          "rrf_score": 0.0311
+        },
+        {
+          "note_title": "Obsidian RAG Assistant Project",
+          "heading": "v1 Scope",
+          "dense_score": 0.1781,
+          "bm25_score": 2.1568,
+          "rrf_score": 0.0307
+        },
+        {
+          "note_title": "Obsidian RAG Assistant Project",
+          "heading": "Obsidian RAG Assistant Project",
+          "dense_score": 0.1159,
+          "bm25_score": 2.5313,
+          "rrf_score": 0.0306
+        },
+        {
+          "note_title": "Agentic AI Concepts",
+          "heading": "Relevance to RAG",
+          "dense_score": 0.0591,
+          "bm25_score": 5.3428,
+          "rrf_score": 0.0303
+        }
+      ]
+    }
+  ]
+}

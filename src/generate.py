@@ -9,6 +9,7 @@ constraint the assistant was scoped under.
 """
 
 import os
+import re
 
 SYSTEM_PROMPT = """You are a knowledge assistant answering questions about a \
 personal Obsidian vault. You will be given retrieved note excerpts. \
@@ -41,6 +42,36 @@ Question: {question}
 Answer, citing note titles in parentheses like (Note: <title>) after each claim.
 """
 
+CITATION_PATTERN = re.compile(
+    r"\(Note:\s*([^)]+?)\)",
+    re.IGNORECASE,
+)
+
+
+def ensure_citations(answer: str, hits: list) -> str:
+    """Ensure citations are present and grounded in retrieved notes."""
+    note_titles = list(dict.fromkeys(hit["note_title"] for hit in hits))
+    if not note_titles:
+        return answer
+
+    citations = [
+        match.strip()
+        for match in CITATION_PATTERN.findall(answer)
+    ]
+
+    valid_citations = [
+        citation
+        for citation in citations
+        if citation in note_titles
+    ]
+
+    if citations and len(valid_citations) == len(citations):
+        return answer
+
+    cleaned_answer = CITATION_PATTERN.sub("", answer).strip()
+    source_text = ", ".join(f"(Note: {title})" for title in note_titles)
+
+    return f"{cleaned_answer}\n\nSources: {source_text}"
 
 def _call_groq(prompt: str) -> str:
     from groq import Groq
@@ -52,7 +83,7 @@ def _call_groq(prompt: str) -> str:
             {"role": "user", "content": prompt},
         ],
         temperature=0.2,
-        max_completion_tokens=600,
+        max_tokens=600,
     )
     return resp.choices[0].message.content
 
@@ -79,7 +110,9 @@ def generate_answer(question: str, hits: list) -> dict:
     if os.environ.get("GROQ_API_KEY"):
         try:
             answer = _call_groq(prompt)
+            answer = ensure_citations(answer, hits)
             return {"answer": answer, "provider": "groq/openai/gpt-oss-20b"}
+
         except Exception as e:  # noqa: BLE001
             last_err = e
     else:
@@ -88,6 +121,7 @@ def generate_answer(question: str, hits: list) -> dict:
     if os.environ.get("OPENAI_API_KEY"):
         try:
             answer = _call_openai(prompt)
+            answer = ensure_citations(answer, hits)
             return {"answer": answer, "provider": "openai/gpt-4o-mini"}
         except Exception as e:  # noqa: BLE001
             last_err = e
